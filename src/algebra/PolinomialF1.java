@@ -45,14 +45,26 @@ public class PolinomialF1 extends Polinomial {
 		return true;
 	}
 	
+	private void assign_grade(int[] new_vector, int new_grade) {
+		if (vectorA[0] > vectorB[0]) {
+			new_vector[0] = vectorA[0] + new_grade;
+		} else if (vectorA[0] < vectorB[0]) {
+			new_vector[0] = vectorB[0] + new_grade;
+		} else {
+			new_vector[0] = vectorA[0] + new_grade;
+		}
+	}
+	
 	public int[] sum() {
-		int vectorC[] = new int [20];
+		int vectorC[] = new int[7];
+		int exponentC = 0;
 		
 		if (this.sum_validation()) {
+			boolean reduce_exponent = true;
 			int i = 1, j = 1, k = 1;
-			int exponentA = 0, exponentB = 0, exponentC = 0;
+			int exponentA = 0, exponentB = 0;
 			
-			while ( i <= vectorA[0] + 2 && j <= vectorB[0] + 2) {
+			while ( i <= vectorA[0] + 1 && j <= vectorB[0] + 1) {
 				exponentA = vectorA[0] + 2 - i;
 				exponentB = vectorB[0] + 2 - j;
 				
@@ -64,17 +76,18 @@ public class PolinomialF1 extends Polinomial {
 					j++; k++;
 				} else {
 					vectorC[k] = vectorA[i] + vectorB[j];
-					i++; j++;
+					i++; j++; k++;
 					
-					if (vectorC[k] == 0) {
+					if (vectorC[k] == 0 && reduce_exponent) {
 						exponentC--;
 					} else {
-						k++;
+						reduce_exponent = false;
 					}
 				}
 			}
 		}
 		
+		assign_grade(vectorC, exponentC);
 		return vectorC;
 		
 	}
